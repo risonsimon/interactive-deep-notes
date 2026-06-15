@@ -22,7 +22,17 @@ store, so it opens straight from disk and your answers persist across reloads.
 
 ## Install
 
-Drop the skill folder into wherever your agent looks for skills.
+The easiest way is the [Skills CLI](https://skills.sh), which detects your agent
+and drops the skill in the right place:
+
+```bash
+# install
+npx skills add risonsimon/interactive-deep-notes
+```
+
+### Manual install (git clone)
+
+Or drop the skill folder into wherever your agent looks for skills.
 
 **Claude Code** (`~/.claude/skills/`):
 
