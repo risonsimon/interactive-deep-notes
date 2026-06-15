@@ -26,7 +26,6 @@ The easiest way is the [Skills CLI](https://skills.sh), which detects your agent
 and drops the skill in the right place:
 
 ```bash
-# install
 npx skills add risonsimon/interactive-deep-notes
 ```
 
