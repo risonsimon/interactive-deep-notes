@@ -42,10 +42,28 @@ The agent reads `SKILL.md` and follows it from there.
 
 ## Requirements
 
-- [`uv`](https://docs.astral.sh/uv/) to run the fetch script. It installs
-  `yt-dlp` on demand (declared via PEP 723 inline metadata) — no project setup.
-- Internet access: YouTube for video transcripts, `https://r.jina.ai` for
-  article text.
+The only thing you need installed is **[`uv`](https://docs.astral.sh/uv/)**. The
+fetch script declares its Python version and `yt-dlp` as PEP 723 inline metadata,
+so `uv run` builds an isolated environment automatically — it **downloads a
+managed Python if you don't have one** and installs `yt-dlp` itself. No system
+Python, no manual `pip install`, no virtualenv.
+
+Don't have uv yet? Install it (then restart your shell, or `source
+$HOME/.local/bin/env`, so it's on `PATH`):
+
+```bash
+# macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# macOS (Homebrew alternative)
+brew install uv
+
+# Windows (PowerShell)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+You'll also need internet access: YouTube for video transcripts and
+`https://r.jina.ai` for article text.
 
 ## Usage
 

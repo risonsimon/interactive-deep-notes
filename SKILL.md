@@ -104,13 +104,40 @@ The fetch script (step 1) creates this folder and prints the exact paths.
 
 ### 1. Fetch the source
 
-Run it with `uv` from the directory where you want the `notes/` output (it
-installs `yt-dlp` on demand for videos and uses `r.jina.ai` for articles; no
-project setup needed). The script path is relative to this skill folder:
+**Preflight — the only prerequisite is `uv`.** The script declares its Python
+version and `yt-dlp` as inline (PEP 723) metadata, so `uv run` builds an isolated
+environment on the fly: it **downloads a managed Python if the machine doesn't
+have one** and installs `yt-dlp` itself. The user needs neither Python nor
+`yt-dlp` pre-installed — only `uv`.
+
+So check for `uv` first and install it if missing. Detect the user's OS and run
+the matching command (don't run all of them):
+
+```bash
+uv --version    # if this prints a version, skip the install below
+
+# macOS / Linux:
+curl -LsSf https://astral.sh/uv/install.sh | sh
+# macOS with Homebrew (alternative):
+brew install uv
+# Windows (PowerShell):
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+After a fresh install, `uv` may not be on `PATH` until a new shell is started;
+`source $HOME/.local/bin/env` (macOS/Linux) exposes it in the current shell. If
+`uv` still isn't found, tell the user and stop rather than guessing.
+
+Then run the fetch from the directory where you want the `notes/` output (the
+script path is relative to this skill folder; videos use `yt-dlp`, articles use
+`r.jina.ai`):
 
 ```bash
 uv run scripts/fetch_source.py "<url>"   # writes notes/<slug>/ under the current dir
 ```
+
+The first `uv run` may take a few seconds while it provisions Python and
+`yt-dlp`; later runs are cached and fast.
 
 It auto-detects the kind from the URL host (YouTube/Vimeo/etc. -> video, any
 other host -> article) and writes a `notes/<slug>/` folder:
@@ -275,10 +302,11 @@ also run its `bun run build` so the new note appears on the home-page listing.)
 Keep this quick. Do **not** spawn subagents (browser-use or otherwise) and do
 **not** run an exhaustive QA pass. The page is self-contained, so just open
 `notes/<slug>/index.html` in a browser. If your browser restricts `localStorage`
-on `file://`, serve the folder instead:
+on `file://`, serve the folder instead (using `uv run python` so you don't need a
+system Python):
 
 ```bash
-python3 -m http.server 8765 --directory notes   # then visit /<slug>/
+uv run python -m http.server 8765 --directory notes   # then visit /<slug>/
 ```
 
 A short self-check is enough: open it once, click a flashcard and a quiz option,

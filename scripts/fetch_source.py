@@ -5,7 +5,9 @@
 # ///
 """Fetch the source for an interactive deep-notes page: a video transcript OR an article.
 
-Run it with uv (installs yt-dlp on demand; no project setup needed):
+Run it with uv -- the only prerequisite. The inline PEP 723 metadata below makes
+`uv run` provision an isolated environment automatically: it downloads a managed
+Python if none is installed and installs yt-dlp. No system Python or pip needed.
 
     uv run scripts/fetch_source.py "<url>"
 
