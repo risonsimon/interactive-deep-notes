@@ -219,7 +219,7 @@ const vframe = document.getElementById('vmodalFrame');
 const hmsToSeconds = hms => { const p = hms.split(':').map(Number); return p.length === 3 ? p[0] * 3600 + p[1] * 60 + p[2] : p[0] * 60 + p[1]; };
 
 function openVideoAt(seconds = 0) {
-  vframe.innerHTML = `<iframe src="https://www.youtube.com/embed/${VIDEO_ID}?start=${Math.floor(seconds)}&autoplay=1&rel=0" title="Video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+  vframe.innerHTML = `<iframe src="https://www.youtube.com/embed/${VIDEO_ID}?start=${Math.floor(seconds)}&autoplay=1&rel=0" title="Video" allow="autoplay; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
   vmodal.hidden = false; document.body.style.overflow = 'hidden';
 }
 function closeVideo() { vmodal.hidden = true; vframe.innerHTML = ''; document.body.style.overflow = ''; } // clearing the iframe stops playback
@@ -236,6 +236,13 @@ document.querySelectorAll('.ts[data-ts]').forEach(b =>
 Each click rebuilds the iframe at the new `start=`, which is simple and works
 offline-free of any API. For seamless seeking without a reload, load the YouTube
 IFrame Player API once and call `player.seekTo(seconds, true)` instead.
+
+**Keep `referrerpolicy="strict-origin-when-cross-origin"` on the iframe.** YouTube
+now requires a referrer to validate the embed; without it (e.g. the page is served
+with a `Referrer-Policy: no-referrer` header) the player fails with **Error 153
+"Video player configuration error"**. The element-level attribute sends just the
+origin to YouTube and overrides a stricter document/header policy for that one
+request.
 
 ### Read original (articles)
 
