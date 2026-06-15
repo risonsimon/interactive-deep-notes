@@ -1,0 +1,9 @@
+# Python
+__pycache__/
+*.pyc
+
+# Generated notes (when the script is run inside this folder)
+notes/
+
+# OS
+.DS_Store
